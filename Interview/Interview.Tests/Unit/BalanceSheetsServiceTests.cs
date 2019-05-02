@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Moq;
+using Interview.Services;
 
 namespace Interview.Tests.Unit
 {
@@ -175,7 +177,8 @@ namespace Interview.Tests.Unit
             double expectedAmount)
         {
             // setup
-            var uut = new BalanceSheetsService();
+            Mock<IBalanceSheetStore> mockStore = new Mock<IBalanceSheetStore>();
+            var uut = new BalanceSheetsService(mockStore.Object);
 
             // execute
             var result = await uut.GetLineItemTotal(TestBalanceSheet.AsOf.Year, TestBalanceSheet.AsOf.Month, lineItemLabel);

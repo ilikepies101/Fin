@@ -28,7 +28,7 @@ namespace Interview
         public string Label { get; set; }
 
         /// <summary>
-        /// A set of line lines that appear under this categorical heading.
+        /// A set of line items that appear under this categorical heading.
         /// Example: If this line item were 'Current Assets' you might find two sub-lines labeled 'Accounts Receivable' and 'Checking Account'.
         /// In other words, 'Accounts Receivable' and 'Checking Account' are categorized as a 'Current Asset' and the total 'Current Assets' is computed by summing 'Accounts Receivable' and 'Checking Account'.
         /// </summary>
@@ -38,6 +38,23 @@ namespace Interview
         /// This property represents the TOTAL monetary amount associated with <see cref="Label"/> including <see cref="Amount"/> and the total of all <see cref="Sublines"/>.
         /// In other words, this property is used to model subtotals that appear in a Balance Sheet.
         /// </summary>
-        public LedgerAmount Total => throw new NotImplementedException();
+        public LedgerAmount Total {
+            get {
+                LedgerAmount ledger = LedgerAmount.Zero;
+                GetSublinesAmount(ledger, this.Sublines);
+                return ledger;
+            }
+        }
+
+        /// <summary>
+        /// Helper function to retrieve the total <see cref="Label"/> including <see cref="Amount"/> and the total of all <see cref="Sublines"/>.
+        /// In other words, this property is used to model subtotals that appear in a Balance Sheet.
+        /// </summary>
+        public void GetSublinesAmount(LedgerAmount ledger, List<LineItem> sublines){
+            foreach(LineItem item in sublines){
+                ledger = ledger + item.Amount;
+                GetSublinesAmount(ledger, item.Sublines);
+            }
+        }
     }
 }

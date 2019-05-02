@@ -1,0 +1,55 @@
+﻿<Properties StartupConfiguration="{BF9F3312-AA39-44DB-A747-2F9097E6813C}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Interview/Models/LineItem.cs">
+    <Files>
+      <File FileName="Interview.Tests/Unit/BalanceSheetsServiceTests.cs" Line="210" Column="28" />
+      <File FileName="Interview/Models/LineItem.cs" Line="43" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Interview" expanded="True">
+            <Node name="Interview" expanded="True">
+              <Node name="Models" expanded="True">
+                <Node name="LineItem.cs" selected="True" />
+              </Node>
+            </Node>
+            <Node name="Interview.Api" expanded="True" />
+            <Node name="Interview.Tests" expanded="True">
+              <Node name="Unit" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="Interview" expanded="True">
+            <Node name="Interview.Tests" expanded="True">
+              <Node name="Interview" expanded="True">
+                <Node name="Tests" expanded="True">
+                  <Node name="Unit" expanded="True">
+                    <Node name="BalanceSheetsServiceTests" expanded="True">
+                      <Node name="CanGetTotalFromLineItem" selected="True" />
+                    </Node>
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.Interview.Api PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/melissawong/Desktop/israel's stuff/israel application stuff/Finagraph_TakeHome/Interview/Interview.Tests/Unit/BalanceSheetsServiceTests.cs" relfile="Interview.Tests/Unit/BalanceSheetsServiceTests.cs" line="207" column="1" />
+      <Breakpoint file="/Users/melissawong/Desktop/israel's stuff/israel application stuff/Finagraph_TakeHome/Interview/Interview/Models/LineItem.cs" relfile="Interview/Models/LineItem.cs" line="43" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

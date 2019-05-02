@@ -41,7 +41,7 @@ namespace Interview
         public LedgerAmount Total {
             get {
                 LedgerAmount ledger = LedgerAmount.Zero;
-                GetSublinesAmount(ledger, this.Sublines);
+                GetSublinesAmount(ref ledger, this.Sublines);
                 return ledger;
             }
         }
@@ -50,10 +50,10 @@ namespace Interview
         /// Helper function to retrieve the total <see cref="Label"/> including <see cref="Amount"/> and the total of all <see cref="Sublines"/>.
         /// In other words, this property is used to model subtotals that appear in a Balance Sheet.
         /// </summary>
-        public void GetSublinesAmount(LedgerAmount ledger, List<LineItem> sublines){
+        public void GetSublinesAmount(ref LedgerAmount ledger, List<LineItem> sublines){
             foreach(LineItem item in sublines){
                 ledger = ledger + item.Amount;
-                GetSublinesAmount(ledger, item.Sublines);
+                GetSublinesAmount(ref ledger, item.Sublines);
             }
         }
     }

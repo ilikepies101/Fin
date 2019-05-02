@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
 using Interview.Services;
+using System.Linq;
 
 namespace Interview.Tests.Unit
 {
@@ -193,6 +194,20 @@ namespace Interview.Tests.Unit
         [TestInitialize]
         public void Init()
         {
+        }
+
+        /// <summary>
+        /// Verifies the total amount based for the TestBalanceSheet
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public void CanGetTotalFromLineItem()
+        {
+            var lineItem = TestBalanceSheet.LineItems.Where(li => li.Label.Equals("Assets")).FirstOrDefault();
+            Console.WriteLine(TestBalanceSheet.LineItems);
+            var expectedTotal = 50_000 + 100_000 + 5_000 + 45_000 - 20_000 + 1_000_000 - 100_000;
+            LedgerAmount expectedLedger = new LedgerAmount(expectedTotal, CreditOrDebit.Debit);
+            expectedLedger.Should().Be(lineItem.Total);
         }
     }
 }

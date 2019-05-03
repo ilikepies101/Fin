@@ -14,7 +14,7 @@ namespace Interview.Services.Implementation
         public BalanceSheetsService(IBalanceSheetStore store){
             if (store == null)
             {
-                throw new ArgumentNullException("IBalanceSheetStore");
+                throw new ArgumentNullException("store", "IBalanceSheetStore");
             }
             this.store = store;
         }
@@ -30,6 +30,7 @@ namespace Interview.Services.Implementation
             (bool Exists, BalanceSheet Result) balanceSheetResult = await this.store.Get(balanceSheetYear, balanceSheetMonth);
 
             LedgerAmount totalLedger = LedgerAmount.Zero;
+            bool foundLineItem = false;
             if (balanceSheetResult.Exists && balanceSheetResult.Result != null)
             {
                 LineItem item = null;
@@ -48,6 +49,7 @@ namespace Interview.Services.Implementation
                 // Calculate lineItem's LedgerAmount
                 if (item != null)
                 {
+                    foundLineItem = true;
                     // We are at a leaf, so use amount as totalLedger
                     if(item.Sublines.Count == 0)
                     {
@@ -58,6 +60,12 @@ namespace Interview.Services.Implementation
                     {
                         totalLedger = item.Total;
                     }
+
+                    Console.WriteLine(
+                        "Info - GetLineItemTotal found line item {0} with total value {1} and is of type {2}",
+                        lineItemLabel,
+                        totalLedger.Value,
+                        totalLedger.Type);
                 }
             }
             else if (!balanceSheetResult.Exists)
@@ -73,8 +81,8 @@ namespace Interview.Services.Implementation
                     balanceSheetYear,
                     balanceSheetMonth);
             }
-
-            return (balanceSheetResult.Exists, totalLedger);
+            
+            return (foundLineItem, totalLedger);
         }
 
         /// <summary>

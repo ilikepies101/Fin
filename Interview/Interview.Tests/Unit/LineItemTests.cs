@@ -26,7 +26,7 @@ namespace Interview.Tests.Unit
             var lineItem = TestBalanceSheet.BalanceSheet.LineItems.First(li => li.Label.Equals("Assets"));
             var expectedTotal = 50_000 + 100_000 + 5_000 + 45_000 - 20_000 + 1_000_000 - 100_000;
             LedgerAmount expectedLedger = new LedgerAmount(expectedTotal, CreditOrDebit.Debit);
-            expectedLedger.Should().Be(lineItem.Total);
+            expectedLedger.Should().Be(lineItem.Total, "because our total for our assets is a sum of all the assets' children's amounts");
         }
     }
 }

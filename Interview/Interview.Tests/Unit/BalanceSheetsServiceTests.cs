@@ -37,8 +37,8 @@ namespace Interview.Tests.Unit
             var result = await uut.GetTrialBalance(It.IsAny<int>(), It.IsAny<int>());
 
             // verify
-            result.Amount.Should().Be(LedgerAmount.Zero);
-            result.Found.Should().BeFalse();
+            result.Amount.Should().Be(LedgerAmount.Zero, "because we default to a zero LedgerAmount.");
+            result.Found.Should().BeFalse("because our mocked store did not find the resul.");
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace Interview.Tests.Unit
             var result = await uut.GetTrialBalance(It.IsAny<int>(), It.IsAny<int>());
 
             // verify
-            result.Amount.Should().Be(LedgerAmount.Zero);
-            result.Found.Should().BeTrue();
+            result.Amount.Should().Be(LedgerAmount.Zero, "because our balance sheet is balanced.");
+            result.Found.Should().BeTrue("because our mocked store found the result");
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace Interview.Tests.Unit
             var result = await uut.GetTrialBalance(It.IsAny<int>(), It.IsAny<int>());
 
             // verify
-            result.Amount.Should().NotBe(LedgerAmount.Zero);
-            result.Found.Should().BeTrue();
+            result.Amount.Should().NotBe(LedgerAmount.Zero, "because our balance sheet is unbalanced.");
+            result.Found.Should().BeTrue("because our mocked store found the result.");
         }
 
         /// <summary>
@@ -99,6 +99,27 @@ namespace Interview.Tests.Unit
             result.Amount
                 .Should()
                 .Be(LedgerAmount.FromFloat(expectedAmount, expectedCreditOrDebit), $"because the expected total amount of {lineItemLabel} is {expectedAmount} {expectedCreditOrDebit}.");
+        }
+
+        /// <summary>
+        /// Tests that verify a line item is not found with a row that doesn't exist in the
+        /// balance sheet. 
+        /// </summary>
+        /// <param name="lineItemLabel"></param>
+        /// <returns></returns>
+        [TestMethod]
+        [DataRow("Made up thing")]
+        public async Task BalanceSheetsService_CanReadLineItemAmount_DoesNotExist(
+            string lineItemLabel)
+        {
+            // execute
+            (bool Found, LedgerAmount Amount) result = await uut.GetLineItemTotal(TestBalanceSheet.BalanceSheet.AsOf.Year, TestBalanceSheet.BalanceSheet.AsOf.Month, lineItemLabel);
+
+            // verify
+            result.Found.Should().BeFalse($"because {lineItemLabel} does not appear in the test balance sheet.");
+            result.Amount
+                .Should()
+                .Be(LedgerAmount.Zero, $"because there is no ledger amount associated with the non existing LineItem.");
         }
     }
 }

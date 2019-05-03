@@ -10,21 +10,39 @@ namespace Interview.Tests.Unit
     [TestClass]
     public class BalanceSheetsServiceTests
     {
-
         BalanceSheetsService uut;
         MockBalanceSheetStore mockStore;
+
         /// <summary>
-        /// Setup the objects used for asserts
-        /// </summary
+        /// Setup - objects used in the tests
+        /// </summary>
         [TestInitialize]
         public void Init()
         {
-            mockStore = new MockBalanceSheetStore(TestBalanceSheet.BalanceSheet);
+            mockStore = new MockBalanceSheetStore(TestBalanceSheet.BalanceSheet, true);
             uut = new BalanceSheetsService(mockStore);
         }
 
+        // <summary>
+        /// A test that verifies a zero ledger amount is returned if result is flagged as not found
+        /// </summary>
+        [TestMethod]
+        public async Task BalanceSheetsService_CanComputeTrialBalance_NotFound()
+        {
+            // setup store so balance sheet is not found
+            mockStore = new MockBalanceSheetStore(TestBalanceSheet_Unbalanced.BalanceSheet, false);
+            uut = new BalanceSheetsService(mockStore);
+
+            // execute
+            var result = await uut.GetTrialBalance(It.IsAny<int>(), It.IsAny<int>());
+
+            // verify
+            result.Amount.Should().Be(LedgerAmount.Zero);
+            result.Found.Should().BeFalse();
+        }
+
         /// <summary>
-        /// A method that computes the trial balance
+        /// A method that verifies the trial balance is zero for a balanced balance sheet
         /// </summary>
         [TestMethod]
         public async Task BalanceSheetsService_CanComputeTrialBalance_IsZero()
@@ -38,14 +56,13 @@ namespace Interview.Tests.Unit
         }
 
         /// <summary>
-        /// A method that computes the trial balance with an unbalanced
-        /// balance sheet
+        /// Test to verify trial balance with an unbalanced balanced sheet
         /// </summary>
         [TestMethod]
         public async Task BalanceSheetsService_CanComputeTrialBalance_IsNonZero()
         {
             // setup with unbalanced sheet passed into mock
-            mockStore = new MockBalanceSheetStore(TestBalanceSheet_Unbalanced.BalanceSheet);
+            mockStore = new MockBalanceSheetStore(TestBalanceSheet_Unbalanced.BalanceSheet, true);
             uut = new BalanceSheetsService(mockStore);
 
             // execute
@@ -57,7 +74,7 @@ namespace Interview.Tests.Unit
         }
 
         /// <summary>
-        /// Tests that verify a line item is found with the correct ledger amoutn
+        /// Tests that verify a line item is found with the correct ledger amount
         /// </summary>
         /// <param name="lineItemLabel"></param>
         /// <param name="expectedCreditOrDebit"></param>

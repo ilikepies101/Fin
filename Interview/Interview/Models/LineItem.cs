@@ -61,8 +61,7 @@ namespace Interview
         }
 
         /// <summary>
-        /// Helper function to find the LineItem that contains the label that's passed in.
-        /// Breadth first search to find the matching label.
+        /// This function searches for a LineItem with a specific label.
         /// </summary>
         public static LineItem FindLineItem(String label, LineItem item) {
             if(item.Label == null)
@@ -77,6 +76,7 @@ namespace Interview
             while (q.Count != 0)
             {
                 LineItem queueItem = q.Dequeue();
+                // Match - return that LineItem
                 if (queueItem.Label == label)
                 {
                     return queueItem;
@@ -85,6 +85,7 @@ namespace Interview
                 queueItem.Sublines.ForEach(li => q.Enqueue(li));
             }
 
+            // Didn't find a match for any of the child LineItems
             return null;    
         }
     }

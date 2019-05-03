@@ -9,10 +9,13 @@ namespace Interview.Services.Implementation
     /// </summary>
     public class BalanceSheetsService : IBalanceSheetService
     {
-        // TODO. This service has a dependency on IBalanceSheetStore
         private readonly IBalanceSheetStore store;
 
         public BalanceSheetsService(IBalanceSheetStore store){
+            if (store == null)
+            {
+                throw new ArgumentNullException("IBalanceSheetStore");
+            }
             this.store = store;
         }
 
@@ -24,36 +27,39 @@ namespace Interview.Services.Implementation
             int balanceSheetMonth,
             string lineItemLabel)
         {
-            // //TODO - make the exists and balance sheet result its own class
             (bool Exists, BalanceSheet Result) balanceSheetResult = await this.store.Get(balanceSheetYear, balanceSheetMonth);
 
             LedgerAmount totalLedger = LedgerAmount.Zero;
             if (balanceSheetResult.Exists && balanceSheetResult.Result != null)
             {
                 LineItem item = null;
+
+                // Search for line item
                 foreach(LineItem lineItem in balanceSheetResult.Result.LineItems)
                 { 
                     item = LineItem.FindLineItem(lineItemLabel, lineItem);
+                    // If we return non null, we found our item - so search can stop
                     if(item != null)
                     {
                         break;
                     }
                 }
-                if(item != null)
+
+                // Calculate lineItem's LedgerAmount
+                if (item != null)
                 {
                     // We are at a leaf, so use amount as totalLedger
                     if(item.Sublines.Count == 0)
                     {
                         totalLedger = item.Amount;
                     }
-                    // The line item contains children, so use total
+                    // The line item contains children, so use Total
                     else
                     {
                         totalLedger = item.Total;
                     }
                 }
             }
-            // TODO - create log class 
             else if (!balanceSheetResult.Exists)
             {
                 Console.WriteLine(
@@ -77,13 +83,12 @@ namespace Interview.Services.Implementation
         public async Task<(bool Found, LedgerAmount Amount)> GetTrialBalance(int balanceSheetYear, int balanceSheetMonth)
         {
             LedgerAmount totalLedger = LedgerAmount.Zero;
-            (bool Found, BalanceSheet Result) balanceSheetResult = await this.store.Get(balanceSheetYear, balanceSheetMonth);          
-            
-            //TODO - wrap in try catch
+
+            (bool Found, BalanceSheet Result) balanceSheetResult = await this.store.Get(balanceSheetYear, balanceSheetMonth);
+
             if(balanceSheetResult.Found && balanceSheetResult.Result != null){
                 foreach (LineItem item in balanceSheetResult.Result.LineItems)
                 {
-                    // TODO - implement += in ledger amount class
                     totalLedger = totalLedger + item.Total;
                 }
             }
@@ -112,8 +117,7 @@ namespace Interview.Services.Implementation
             try {
                 await this.store.Store(balanceSheet);
             } catch (Exception e){
-                // Log exception
-                Console.WriteLine("Encountered an exception {0} saving the balance sheet with AsOf Date {1}", e, balanceSheet.AsOf);
+                Console.WriteLine("Error - Save encountered an exception {0} saving the balance sheet with AsOf Date {1}", e, balanceSheet.AsOf);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Interview.Services
         Task<(bool Exists, BalanceSheet Result)> Get(int Year, int Month);
 
         /// <summary>
-        /// Store a balannce sheet.
+        /// Store a balance sheet.
         /// </summary>
         /// <param name="balanceSheet">The balance sheet to persist to storage.</param>
         Task Store(BalanceSheet balanceSheet);

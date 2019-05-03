@@ -1,16 +1,17 @@
 ﻿<Properties StartupConfiguration="{BF9F3312-AA39-44DB-A747-2F9097E6813C}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Interview.Tests/Unit/HelperObjects/TestBalanceSheet_Unbalanced.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Interview/Services/Implementation/BalanceSheetService.cs">
     <Files>
-      <File FileName="Interview.Tests/Unit/BalanceSheetsServiceTests.cs" Line="63" Column="10" />
-      <File FileName="Interview/Models/LineItem.cs" Line="81" Column="18" />
-      <File FileName="Interview/Services/Implementation/BalanceSheetService.cs" Line="52" Column="36" />
+      <File FileName="Interview.Tests/Unit/BalanceSheetsServiceTests.cs" Line="45" Column="85" />
+      <File FileName="Interview/Services/Implementation/BalanceSheetService.cs" Line="88" Column="51" />
       <File FileName="README.md" Line="107" Column="19" />
       <File FileName="Interview/Models/BalanceSheet.cs" Line="47" Column="40" />
-      <File FileName="Interview/Models/LedgerAmount.cs" Line="28" Column="63" />
-      <File FileName="Interview.Tests/Unit/HelperObjects/MockBalanceSheetStore.cs" Line="14" Column="10" />
-      <File FileName="Interview.Tests/Unit/LineItemTests.cs" Line="32" Column="2" />
-      <File FileName="Interview.Tests/Unit/HelperObjects/TestBalanceSheet.cs" Line="144" Column="1" />
-      <File FileName="Interview.Tests/Unit/HelperObjects/TestBalanceSheet_Unbalanced.cs" Line="9" Column="52" />
+      <File FileName="Interview.Tests/Unit/HelperObjects/MockBalanceSheetStore.cs" Line="22" Column="34" />
+      <File FileName="Interview.Tests/Unit/LineItemTests.cs" Line="30" Column="10" />
+      <File FileName="Interview.Tests/Unit/HelperObjects/TestBalanceSheet_Unbalanced.cs" Line="10" Column="46" />
+      <File FileName="Interview/Services/IBalanceSheetStore.cs" Line="21" Column="30" />
+      <File FileName="Interview/Services/IBalanceSheetService.cs" Line="32" Column="9" />
+      <File FileName="Interview/Services/Implementation/Logger.cs" Line="16" Column="1" />
+      <File FileName="Interview/Models/LineItem.cs" Line="88" Column="66" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,17 +21,17 @@
             <Node name="Interview" expanded="True">
               <Node name="Models" expanded="True" />
               <Node name="Services" expanded="True">
-                <Node name="Implementation" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="Interview.Api" expanded="True" />
-            <Node name="Interview.Tests" expanded="True">
-              <Node name="Dependencies" expanded="True" />
-              <Node name="Unit" expanded="True">
-                <Node name="HelperObjects" expanded="True">
-                  <Node name="TestBalanceSheet_Unbalanced.cs" selected="True" />
+                <Node name="Implementation" expanded="True">
+                  <Node name="BalanceSheetService.cs" selected="True" />
                 </Node>
               </Node>
+            </Node>
+            <Node name="Interview.Api" expanded="True">
+              <Node name="Properties" expanded="True" />
+            </Node>
+            <Node name="Interview.Tests" expanded="True">
+              <Node name="Dependencies" expanded="True" />
+              <Node name="Unit" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -45,8 +46,10 @@
               <Node name="Interview" expanded="True">
                 <Node name="Tests" expanded="True">
                   <Node name="Unit" expanded="True">
-                    <Node name="BalanceSheetsServiceTests" expanded="True" />
-                    <Node name="LineItemTests" expanded="True" selected="True" />
+                    <Node name="BalanceSheetsServiceTests" expanded="True">
+                      <Node name="BalanceSheetsService_CanComputeTrialBalance_NotFound" selected="True" />
+                    </Node>
+                    <Node name="LineItemTests" expanded="True" />
                   </Node>
                 </Node>
               </Node>

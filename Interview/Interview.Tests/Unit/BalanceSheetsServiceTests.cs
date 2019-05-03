@@ -152,11 +152,15 @@ namespace Interview.Tests.Unit
         public async Task BalanceSheetsService_CanComputeTrialBalance()
         {
             // setup
+            MockBalanceSheetStore mockStore = new MockBalanceSheetStore();
+            var uut = new BalanceSheetsService(mockStore);
 
             // execute
+            var result = await uut.GetTrialBalance(It.IsAny<int>(), It.IsAny<int>());
 
             // verify
-            Assert.Inconclusive("Not yet implemented.");
+            result.Amount.Should().Be(LedgerAmount.Zero);
+            result.Found.Should().BeTrue();
         }
 
         /// <summary>
@@ -170,7 +174,7 @@ namespace Interview.Tests.Unit
         [DataRow("Assets", CreditOrDebit.Debit, 1_080_000)]
         [DataRow("Current Assets", CreditOrDebit.Debit, 155_000)]
         [DataRow("Accounts Receivable", CreditOrDebit.Debit, 50_000)]
-        [DataRow("Liabilities & Equity", CreditOrDebit.Credit, 1_080_000)]
+        [DataRow("Liabilities and Equity", CreditOrDebit.Credit, 1_080_000)]
         [DataRow("Accounts Payable", CreditOrDebit.Credit, 20_000)]
         public async Task BalanceSheetsService_CanReadLineItemAmount(
             string lineItemLabel,
@@ -178,8 +182,8 @@ namespace Interview.Tests.Unit
             double expectedAmount)
         {
             // setup
-            Mock<IBalanceSheetStore> mockStore = new Mock<IBalanceSheetStore>();
-            var uut = new BalanceSheetsService(mockStore.Object);
+            MockBalanceSheetStore mockStore = new MockBalanceSheetStore();
+            var uut = new BalanceSheetsService(mockStore);
 
             // execute
             var result = await uut.GetLineItemTotal(TestBalanceSheet.AsOf.Year, TestBalanceSheet.AsOf.Month, lineItemLabel);
@@ -197,14 +201,16 @@ namespace Interview.Tests.Unit
         }
 
         /// <summary>
-        /// Verifies the total amount based for the TestBalanceSheet
+        /// Verifies the total amount based for the TestBalanceSheet by manually summing up
+        /// the expected value from the TestBalanceSheet.
         /// </summary>
         /// <returns></returns>
         [TestMethod]
         public void CanGetTotalFromLineItem()
         {
-            var lineItem = TestBalanceSheet.LineItems.Where(li => li.Label.Equals("Assets")).FirstOrDefault();
-            Console.WriteLine(TestBalanceSheet.LineItems);
+            // TODO - make the expected total dynamic - based on test balance sheet if possible
+            // Verify assets line items
+            var lineItem = TestBalanceSheet.LineItems.First(li => li.Label.Equals("Assets"));
             var expectedTotal = 50_000 + 100_000 + 5_000 + 45_000 - 20_000 + 1_000_000 - 100_000;
             LedgerAmount expectedLedger = new LedgerAmount(expectedTotal, CreditOrDebit.Debit);
             expectedLedger.Should().Be(lineItem.Total);

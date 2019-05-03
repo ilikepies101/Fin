@@ -25,14 +25,50 @@ namespace Interview.Services.Implementation
             string lineItemLabel)
         {
             // //TODO - make the exists and balance sheet result its own class
-            // (bool Exists, BalanceSheet Result) tuple = await this.store.Get(balanceSheetYear, balanceSheetMonth);
-            // if(tuple.Exists){
-            //     //LedgerAmount ledger = new LedgerAmount(0, CreditOrDebit.Zero);
-            //     //this.CalculateLedgerSum(Result.LineItems, ledger);
+            (bool Exists, BalanceSheet Result) balanceSheetResult = await this.store.Get(balanceSheetYear, balanceSheetMonth);
 
-            //     //LedgerAmount ledger = new LedgerAmount(sum, );
-            //}
-            throw new NotImplementedException(); 
+            LedgerAmount totalLedger = LedgerAmount.Zero;
+            if (balanceSheetResult.Exists && balanceSheetResult.Result != null)
+            {
+                LineItem item = null;
+                foreach(LineItem lineItem in balanceSheetResult.Result.LineItems)
+                { 
+                    item = LineItem.FindLineItem(lineItemLabel, lineItem);
+                    if(item != null)
+                    {
+                        break;
+                    }
+                }
+                if(item != null)
+                {
+                    // We are at a leaf, so use amount as totalLedger
+                    if(item.Sublines.Count == 0)
+                    {
+                        totalLedger = item.Amount;
+                    }
+                    // The line item contains children, so use total
+                    else
+                    {
+                        totalLedger = item.Total;
+                    }
+                }
+            }
+            // TODO - create log class 
+            else if (!balanceSheetResult.Exists)
+            {
+                Console.WriteLine(
+                    "Warn - GetLineItemTotal did not find a balance sheet for year {0} and month {1}",
+                    balanceSheetYear,
+                    balanceSheetMonth);
+            }
+            else
+            {
+                Console.WriteLine("Error - GetLineItemTotal returned found for year {0} and month {1} but Result was null",
+                    balanceSheetYear,
+                    balanceSheetMonth);
+            }
+
+            return (balanceSheetResult.Exists, totalLedger);
         }
 
         /// <summary>
@@ -40,19 +76,32 @@ namespace Interview.Services.Implementation
         /// </summary>
         public async Task<(bool Found, LedgerAmount Amount)> GetTrialBalance(int balanceSheetYear, int balanceSheetMonth)
         {
-            LedgerAmount ledger = LedgerAmount.Zero;
-            (bool Found, BalanceSheet Result) trialBalanceTask = await this.store.Get(balanceSheetYear, balanceSheetMonth);          
+            LedgerAmount totalLedger = LedgerAmount.Zero;
+            (bool Found, BalanceSheet Result) balanceSheetResult = await this.store.Get(balanceSheetYear, balanceSheetMonth);          
             
             //TODO - wrap in try catch
-            if(trialBalanceTask.Found && trialBalanceTask.Result != null){
-                foreach (LineItem item in trialBalanceTask.Result.LineItems)
+            if(balanceSheetResult.Found && balanceSheetResult.Result != null){
+                foreach (LineItem item in balanceSheetResult.Result.LineItems)
                 {
                     // TODO - implement += in ledger amount class
-                    ledger = ledger + item.Amount;
+                    totalLedger = totalLedger + item.Total;
                 }
             }
+            else if (!balanceSheetResult.Found)
+            {
+                Console.WriteLine(
+                    "Warn - GetTrialBalance did not find a balance sheet for year {0} and month {1}",
+                    balanceSheetYear,
+                    balanceSheetMonth);
+            }
+            else
+            {
+                Console.WriteLine("Error - GetTrialBalance returned found for year {0} and month {1} but Result was null",
+                    balanceSheetYear,
+                    balanceSheetMonth);
+            }
 
-            return (trialBalanceTask.Found, ledger);
+            return (balanceSheetResult.Found, totalLedger);
         }
 
         /// <summary>

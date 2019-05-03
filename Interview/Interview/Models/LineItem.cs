@@ -25,7 +25,7 @@ namespace Interview
         /// <summary>
         /// A text label for the line item.
         /// </summary>
-        public string Label { get; set; }
+        public string Label { get; set; } = "";
 
         /// <summary>
         /// A set of line items that appear under this categorical heading.
@@ -50,11 +50,42 @@ namespace Interview
         /// Helper function to retrieve the total <see cref="Label"/> including <see cref="Amount"/> and the total of all <see cref="Sublines"/>.
         /// In other words, this property is used to model subtotals that appear in a Balance Sheet.
         /// </summary>
-        public void GetSublinesAmount(ref LedgerAmount ledger, List<LineItem> sublines){
-            foreach(LineItem item in sublines){
+        private void GetSublinesAmount(ref LedgerAmount ledger, List<LineItem> sublines){
+            // Not checking for null base case because sublines will always be instantiated to an
+            // empty list
+            foreach (LineItem item in sublines){
+                // Not checking for a null pointer since Amount is always initialized to zero LedgerAmount
                 ledger = ledger + item.Amount;
                 GetSublinesAmount(ref ledger, item.Sublines);
             }
+        }
+
+        /// <summary>
+        /// Helper function to find the LineItem that contains the label that's passed in.
+        /// Breadth first search to find the matching label.
+        /// </summary>
+        public static LineItem FindLineItem(String label, LineItem item) {
+            if(item.Label == null)
+            {
+                return null;
+            }
+
+            Queue<LineItem> q = new Queue<LineItem>();
+
+            q.Enqueue(item);
+
+            while (q.Count != 0)
+            {
+                LineItem queueItem = q.Dequeue();
+                if (queueItem.Label == label)
+                {
+                    return queueItem;
+                }
+
+                queueItem.Sublines.ForEach(li => q.Enqueue(li));
+            }
+
+            return null;    
         }
     }
 }

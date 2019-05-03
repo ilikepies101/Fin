@@ -1,15 +1,16 @@
 ﻿<Properties StartupConfiguration="{BF9F3312-AA39-44DB-A747-2F9097E6813C}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Interview.Tests/Unit/BalanceSheetsServiceTests.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Interview.Tests/Unit/HelperObjects/TestBalanceSheet_Unbalanced.cs">
     <Files>
-      <File FileName="Interview.Tests/Unit/BalanceSheetsServiceTests.cs" Line="50" Column="27" />
+      <File FileName="Interview.Tests/Unit/BalanceSheetsServiceTests.cs" Line="63" Column="10" />
       <File FileName="Interview/Models/LineItem.cs" Line="81" Column="18" />
       <File FileName="Interview/Services/Implementation/BalanceSheetService.cs" Line="52" Column="36" />
       <File FileName="README.md" Line="107" Column="19" />
       <File FileName="Interview/Models/BalanceSheet.cs" Line="47" Column="40" />
       <File FileName="Interview/Models/LedgerAmount.cs" Line="28" Column="63" />
-      <File FileName="Interview.Tests/Unit/HelperObjects/MockBalanceSheetStore.cs" Line="17" Column="48" />
-      <File FileName="Interview.Tests/Unit/LineItemTests.cs" Line="29" Column="10" />
-      <File FileName="Interview.Tests/Unit/HelperObjects/TestBalanceSheet.cs" Line="1" Column="1" />
+      <File FileName="Interview.Tests/Unit/HelperObjects/MockBalanceSheetStore.cs" Line="14" Column="10" />
+      <File FileName="Interview.Tests/Unit/LineItemTests.cs" Line="32" Column="2" />
+      <File FileName="Interview.Tests/Unit/HelperObjects/TestBalanceSheet.cs" Line="144" Column="1" />
+      <File FileName="Interview.Tests/Unit/HelperObjects/TestBalanceSheet_Unbalanced.cs" Line="9" Column="52" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,8 +27,9 @@
             <Node name="Interview.Tests" expanded="True">
               <Node name="Dependencies" expanded="True" />
               <Node name="Unit" expanded="True">
-                <Node name="HelperObjects" expanded="True" />
-                <Node name="BalanceSheetsServiceTests.cs" selected="True" />
+                <Node name="HelperObjects" expanded="True">
+                  <Node name="TestBalanceSheet_Unbalanced.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -44,9 +46,7 @@
                 <Node name="Tests" expanded="True">
                   <Node name="Unit" expanded="True">
                     <Node name="BalanceSheetsServiceTests" expanded="True" />
-                    <Node name="LineItemTests" expanded="True">
-                      <Node name="BalanceSheetsService_CanComputeTrialBalance" selected="True" />
-                    </Node>
+                    <Node name="LineItemTests" expanded="True" selected="True" />
                   </Node>
                 </Node>
               </Node>

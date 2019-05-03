@@ -1,12 +1,8 @@
 ﻿using FluentAssertions;
 using Interview.Services.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
-using Interview.Services;
-using System.Linq;
 using Interview.Tests.Unit.HelperObjects;
 
 namespace Interview.Tests.Unit
@@ -23,7 +19,7 @@ namespace Interview.Tests.Unit
         [TestInitialize]
         public void Init()
         {
-            mockStore = new MockBalanceSheetStore();
+            mockStore = new MockBalanceSheetStore(TestBalanceSheet.BalanceSheet);
             uut = new BalanceSheetsService(mockStore);
         }
 
@@ -42,16 +38,21 @@ namespace Interview.Tests.Unit
         }
 
         /// <summary>
-        /// A method that computes the trial balance
+        /// A method that computes the trial balance with an unbalanced
+        /// balance sheet
         /// </summary>
         [TestMethod]
-        public async Task BalanceSheetsService_CanComputeTrialBalance()
+        public async Task BalanceSheetsService_CanComputeTrialBalance_IsNonZero()
         {
+            // setup with unbalanced sheet passed into mock
+            mockStore = new MockBalanceSheetStore(TestBalanceSheet_Unbalanced.BalanceSheet);
+            uut = new BalanceSheetsService(mockStore);
+
             // execute
             var result = await uut.GetTrialBalance(It.IsAny<int>(), It.IsAny<int>());
 
             // verify
-            result.Amount.Should().Be(LedgerAmount.Zero);
+            result.Amount.Should().NotBe(LedgerAmount.Zero);
             result.Found.Should().BeTrue();
         }
 

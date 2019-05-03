@@ -7,17 +7,17 @@ namespace Interview.Tests.Unit
 {
     public class MockBalanceSheetStore : IBalanceSheetStore
     {
-
-        public MockBalanceSheetStore()
+        private readonly BalanceSheet sheet;
+        public MockBalanceSheetStore(BalanceSheet sheet)
         {
-
+            this.sheet = sheet;
         }
 
         async Task<(bool Exists, BalanceSheet Result)> IBalanceSheetStore.Get(int Year, int Month)
         {
             // Simulate delay to reach to Store
             await Task.Delay(10);
-            return (true, TestBalanceSheet.BalanceSheet);
+            return (true, sheet);
         }
 
         Task IBalanceSheetStore.Store(BalanceSheet balanceSheet)

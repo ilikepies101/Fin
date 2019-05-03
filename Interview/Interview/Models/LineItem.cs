@@ -63,6 +63,7 @@ namespace Interview
         /// <summary>
         /// This function searches for a LineItem with a specific label.
         /// </summary>
+        /// <returns> The found line item </returns>
         public static LineItem FindLineItem(String label, LineItem item) {
             if(item.Label == null)
             {

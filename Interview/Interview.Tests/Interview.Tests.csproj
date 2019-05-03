@@ -18,4 +18,7 @@
     <ProjectReference Include="..\Interview\Interview.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Unit\HelperObjects\" />
+  </ItemGroup>
 </Project>
